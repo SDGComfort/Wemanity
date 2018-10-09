@@ -32,7 +32,8 @@ TEXTTESTS = GildedRoseTextTests
 
 # House-keeping build targets.
 
-all : $(TESTS) $(TEXTTESTS)
+# all : $(TESTS) $(TEXTTESTS)
+all : $(TEXTTESTS)
 
 GildedRose.o : $(USER_DIR)/GildedRose.c
 
