@@ -21,5 +21,7 @@ extern void test_update_normal_item (int);
 extern int get_item_sellIn (int);
 extern int get_item_quality (int);
 extern void zero_list_size();
+extern void test_update_brie(int);
+extern void test_update_legendary (int);
 
 

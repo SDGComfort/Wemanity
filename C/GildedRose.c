@@ -140,11 +140,21 @@ static void update_normal_item(int i)
     if (items[i].quality < 0) items[i].quality = 0;
 }
 
+void test_update_brie(int i)
+{
+    update_aged_brie(i);
+}
+
 static void update_aged_brie(int i)
 {
     items[i].sellIn--;
     items[i].quality++;
     if (items[i].quality > 50) items[i].quality = 50;
+}
+
+void test_update_legendary (int i)
+{
+    update_legendary_item(i);
 }
 
 static void update_legendary_item(int i)

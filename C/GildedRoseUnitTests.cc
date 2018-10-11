@@ -17,7 +17,7 @@ TEST_GROUP(TestGildedRoseGroup)
      int list_size = 0;
 
      list_size = test_add_item("+5 Dexterity Vest",5,7);
-     list_size = test_add_item("Aged Brie", 2, 0); 
+     list_size = test_add_item("Aged Brie", 4, 47); 
      list_size = test_add_item("Sulfuras, Hand of Ragnaros", 0, 80);
      list_size = test_add_item("Backstage passes to a TAFKAL80ETC concert", 15, 20);
      list_size = test_add_item("Conjured Mana cake",3,6);
@@ -86,6 +86,65 @@ TEST(TestGildedRoseGroup, SecondTest)
    CHECK_EQUAL(-2,sellIn);
    quality = get_item_quality(0);
    CHECK_EQUAL(0,quality);
+}
+
+TEST(TestGildedRoseGroup, ThirdTest)
+{
+/* Aged Brie increases linearly in quality up to a max of 50 */
+
+   int sellIn;
+   int quality;
+
+   test_update_brie(1);
+   sellIn = get_item_sellIn(1);
+   CHECK_EQUAL(3,sellIn);
+   quality = get_item_quality(1);
+   CHECK_EQUAL(48,quality);
+
+   test_update_brie(1);
+   sellIn = get_item_sellIn(1);
+   CHECK_EQUAL(2,sellIn);
+   quality = get_item_quality(1);
+   CHECK_EQUAL(49,quality);
+
+   test_update_brie(1);
+   sellIn = get_item_sellIn(1);
+   CHECK_EQUAL(1,sellIn);
+   quality = get_item_quality(1);
+   CHECK_EQUAL(50,quality);
+
+   test_update_brie(1);
+   sellIn = get_item_sellIn(1);
+   CHECK_EQUAL(0,sellIn);
+   quality = get_item_quality(1);
+   CHECK_EQUAL(50,quality);
+
+   test_update_brie(1);
+   sellIn = get_item_sellIn(1);
+   CHECK_EQUAL(-1,sellIn);
+   quality = get_item_quality(1);
+   CHECK_EQUAL(50,quality);
+}
+
+TEST(TestGildedRoseGroup, FourthTest)
+{
+/* Nothing changes, max quality is 80. Not clear whether sellIn is supposed to 
+   change I assume it doesn't */
+
+   int sellIn;
+   int quality;
+
+   test_update_legendary(2);
+   sellIn = get_item_sellIn(2);
+   CHECK_EQUAL(0,sellIn);
+   quality = get_item_quality(2);
+   CHECK_EQUAL(80,quality);
+
+   test_update_legendary(2);
+   sellIn = get_item_sellIn(2);
+   CHECK_EQUAL(0,sellIn);
+   quality = get_item_quality(2);
+   CHECK_EQUAL(80,quality);
 }
 
 int main(int ac, char** av)
