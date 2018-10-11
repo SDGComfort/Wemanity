@@ -18,6 +18,7 @@ USER_DIR = .
 
 # Flags passed to the preprocessor.
 CPPFLAGS += -I$(CPPUTEST_HOME)/include
+CPPUTEST_USE_GCOV = Y
 
 # Flags passed to the C++ compiler.
 CFLAGS += -g -Wall -Wextra
@@ -32,8 +33,7 @@ TEXTTESTS = GildedRoseTextTests
 
 # House-keeping build targets.
 
-# all : $(TESTS) $(TEXTTESTS)
-all : $(TEXTTESTS)
+all : $(TESTS) $(TEXTTESTS)
 
 GildedRose.o : $(USER_DIR)/GildedRose.c
 

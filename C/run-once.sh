@@ -1,2 +1,3 @@
 make all
-./GildedRoseTextTests
+#./GildedRoseTextTests
+./GildedRoseUnitTests

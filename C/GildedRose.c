@@ -4,9 +4,10 @@
 #include "GildedRose.h"
 
 
+
 static int size = 0;
 static Item items[MAX_ITEMS];
-static void add_item(const char*, int, int);
+static int add_item(const char*, int, int);
 static void print_item(Item);
 static void update_quality();
 static int identify_item(Item);
@@ -37,21 +38,38 @@ void list_stock()
        print_item(items[i]);
 }  
 
-void simulate_time()
+void simulate_time(int days)
 {
     int day;
 
-    for(day=0;day<20;day++){
+    for(day=0;day<days;day++){
        update_quality();
        list_stock();
     }
 }
 
-static void add_item(const char* name, int sellIn, int quality){
+void zero_list_size()
+{
+    size = 0;
+}
+
+int test_add_item(const char* name, int sellIn, int quality)
+{
+    int result; 
+
+    result = add_item(name, sellIn, quality);
+    return result;
+}
+
+static int add_item(const char* name, int sellIn, int quality){
+    
+    if (size >= MAX_ITEMS) return FAILED;
     items[size].name = strdup(name);
     items[size].sellIn = sellIn;
     items[size++].quality = quality; 
+    return size;
 }
+
 
 static void print_item(Item item)
 {
@@ -97,6 +115,21 @@ static int identify_item(Item item)
        return CONJURED;
     }
     return -1;
+}
+
+void test_update_normal_item (int i)
+{
+    update_normal_item(i);
+}
+
+int get_item_sellIn (int i)
+{
+    return items[i].sellIn;
+}
+
+int get_item_quality (int i)
+{
+    return items[i].quality;
 }
 
 static void update_normal_item(int i)
