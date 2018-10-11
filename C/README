@@ -1,5 +1,14 @@
-run-once.sh runs your tests once
+This is a first pass refactoring. As such the aim was to simplify the structure.
 
-Assumptions:
-  - make and a C++ compiler (like gcc) is installed on your system and is in the PATH
-  - The CppUTest framework is in the directory CppUTest
+There are a bunch of improvements that could be made both to the unit test code
+as well as the actual code.
+
+1) Wrap the ITEM structure in another structure and construct a linked list.
+2) This would then allow the dynamic addition of stock items.
+3) Structure would also contain a Type field that would be computed once when items are added. This
+   would get rid of the bulk of the strcmp functions.
+4) Wrap the test code in an "ifdef TEST" macro
+5) Extend the addition of items to allow items that don't fall into the current types to be added.
+6) Refactor the very repetitive unit tests to run in loops and not use magiv numbers
+
+Note. As is, the text tests will not run correctly since the array size was set to 5. Increase this to 8 or greater if you want to run the text tests.

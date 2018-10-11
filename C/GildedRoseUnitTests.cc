@@ -20,7 +20,7 @@ TEST_GROUP(TestGildedRoseGroup)
      list_size = test_add_item("Aged Brie", 4, 47); 
      list_size = test_add_item("Sulfuras, Hand of Ragnaros", 0, 80);
      list_size = test_add_item("Backstage passes to a TAFKAL80ETC concert", 12, 24);
-     list_size = test_add_item("Conjured Mana cake",3,6);
+     list_size = test_add_item("Conjured Mana cake",2,11);
   }
   void teardown() {
      zero_list_size();
@@ -235,6 +235,37 @@ TEST(TestGildedRoseGroup, FifthTest)
 
 }
 
+TEST(TestGildedRoseGroup, SixthTest)
+{
+/* Quality decreases by 2 per day until sell by date, thereafter decreases by 4 to a minimum of 0 */
+
+   int sellIn;
+   int quality;
+
+   test_update_conjured(4);
+   sellIn = get_item_sellIn(4);
+   CHECK_EQUAL(1,sellIn);
+   quality = get_item_quality(4);
+   CHECK_EQUAL(9,quality);
+
+   test_update_conjured(4);
+   sellIn = get_item_sellIn(4);
+   CHECK_EQUAL(0,sellIn);
+   quality = get_item_quality(4);
+   CHECK_EQUAL( 7,quality);
+
+   test_update_conjured(4);
+   sellIn = get_item_sellIn(4);
+   CHECK_EQUAL(-1,sellIn);
+   quality = get_item_quality(4);
+   CHECK_EQUAL(3,quality);
+
+   test_update_conjured(4);
+   sellIn = get_item_sellIn(4);
+   CHECK_EQUAL(-2,sellIn);
+   quality = get_item_quality(4);
+   CHECK_EQUAL(0,quality);
+}
 
 int main(int ac, char** av)
 {

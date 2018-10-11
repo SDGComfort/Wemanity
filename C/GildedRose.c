@@ -177,6 +177,11 @@ static void update_backstage_pass(int i)
     if (items[i].quality > 50) items[i].quality = 50;
 }
 
+void test_update_conjured (int i)
+{
+    update_conjured_item(i);
+}
+
 static void update_conjured_item(int i)
 {
     items[i].sellIn--;
