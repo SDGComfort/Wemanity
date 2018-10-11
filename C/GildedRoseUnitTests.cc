@@ -19,7 +19,7 @@ TEST_GROUP(TestGildedRoseGroup)
      list_size = test_add_item("+5 Dexterity Vest",5,7);
      list_size = test_add_item("Aged Brie", 4, 47); 
      list_size = test_add_item("Sulfuras, Hand of Ragnaros", 0, 80);
-     list_size = test_add_item("Backstage passes to a TAFKAL80ETC concert", 15, 20);
+     list_size = test_add_item("Backstage passes to a TAFKAL80ETC concert", 12, 24);
      list_size = test_add_item("Conjured Mana cake",3,6);
   }
   void teardown() {
@@ -146,6 +146,95 @@ TEST(TestGildedRoseGroup, FourthTest)
    quality = get_item_quality(2);
    CHECK_EQUAL(80,quality);
 }
+
+TEST(TestGildedRoseGroup, FifthTest)
+{
+/* Quality increases by 1 until 10 days to go when it increases by two, within 5 days increases by 3
+   After date, quality is 0. Max quality is 50 */
+
+   int sellIn;
+   int quality;
+
+   test_update_tickets(3);
+   sellIn = get_item_sellIn(3);
+   CHECK_EQUAL(11,sellIn);
+   quality = get_item_quality(3);
+   CHECK_EQUAL(25,quality);
+
+   test_update_tickets(3);
+   sellIn = get_item_sellIn(3);
+   CHECK_EQUAL(10,sellIn);
+   quality = get_item_quality(3);
+   CHECK_EQUAL(27,quality);
+
+   test_update_tickets(3);
+   sellIn = get_item_sellIn(3);
+   CHECK_EQUAL(9,sellIn);
+   quality = get_item_quality(3);
+   CHECK_EQUAL(29,quality);
+
+   test_update_tickets(3);
+   sellIn = get_item_sellIn(3);
+   CHECK_EQUAL(8,sellIn);
+   quality = get_item_quality(3);
+   CHECK_EQUAL(31,quality);
+
+   test_update_tickets(3);
+   sellIn = get_item_sellIn(3);
+   CHECK_EQUAL(7,sellIn);
+   quality = get_item_quality(3);
+   CHECK_EQUAL(33,quality);
+
+   test_update_tickets(3);
+   sellIn = get_item_sellIn(3);
+   CHECK_EQUAL(6,sellIn);
+   quality = get_item_quality(3);
+   CHECK_EQUAL(35,quality);
+
+   test_update_tickets(3);
+   sellIn = get_item_sellIn(3);
+   CHECK_EQUAL(5,sellIn);
+   quality = get_item_quality(3);
+   CHECK_EQUAL(38,quality);
+
+   test_update_tickets(3);
+   sellIn = get_item_sellIn(3);
+   CHECK_EQUAL(4,sellIn);
+   quality = get_item_quality(3);
+   CHECK_EQUAL(41,quality);
+
+   test_update_tickets(3);
+   sellIn = get_item_sellIn(3);
+   CHECK_EQUAL(3,sellIn);
+   quality = get_item_quality(3);
+   CHECK_EQUAL(44,quality);
+
+   test_update_tickets(3);
+   sellIn = get_item_sellIn(3);
+   CHECK_EQUAL(2,sellIn);
+   quality = get_item_quality(3);
+   CHECK_EQUAL(47,quality);
+
+   test_update_tickets(3);
+   sellIn = get_item_sellIn(3);
+   CHECK_EQUAL(1,sellIn);
+   quality = get_item_quality(3);
+   CHECK_EQUAL(50,quality);
+
+   test_update_tickets(3);
+   sellIn = get_item_sellIn(3);
+   CHECK_EQUAL(0,sellIn);
+   quality = get_item_quality(3);
+   CHECK_EQUAL(50,quality);
+
+   test_update_tickets(3);
+   sellIn = get_item_sellIn(3);
+   CHECK_EQUAL(-1,sellIn);
+   quality = get_item_quality(3);
+   CHECK_EQUAL(0,quality);
+
+}
+
 
 int main(int ac, char** av)
 {

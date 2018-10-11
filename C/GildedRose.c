@@ -162,12 +162,17 @@ static void update_legendary_item(int i)
     if (items[i].quality != 80) items[i].quality = 80;
 }
 
+void test_update_tickets(int i)
+{
+    update_backstage_pass(i);
+}
+
 static void update_backstage_pass(int i)
 {
     items[i].sellIn--;
     if (items[i].sellIn > 10) items[i].quality++;
-    else if ((items[i].sellIn <= 10) && (items[i].sellIn > 6)) items[i].quality +=2;
-    else if ((items[i].sellIn <=6) && (items[i].sellIn >= 0)) items[i].quality +=3;
+    else if ((items[i].sellIn <= 10) && (items[i].sellIn >= 6)) items[i].quality +=2;
+    else if ((items[i].sellIn <=5) && (items[i].sellIn >= 0)) items[i].quality +=3;
     else if (items[i].sellIn < 0) items[i].quality = 0;
     if (items[i].quality > 50) items[i].quality = 50;
 }
