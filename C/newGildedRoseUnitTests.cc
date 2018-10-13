@@ -23,14 +23,12 @@ TEST_GROUP(TestGildedRoseGroup)
       CHECK_EQUAL(SUCCESS,result);
   }
   void teardown() {
-     zero_list_size();
+      int result;
+
+      result = free_stock();
+      CHECK_EQUAL(5,result);
   }
 };
-
-
-
-
-
 
 TEST(TestGildedRoseGroup, FirstTest)
 {

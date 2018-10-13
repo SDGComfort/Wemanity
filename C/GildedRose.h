@@ -22,6 +22,7 @@ enum TYPES{NORMAL,BRIE,LEGENDARY,TICKETS,CONJURED};
 extern void initialize();
 extern void list_stock();
 extern int  print_stock();
+extern int  free_stock();
 
 
 extern void simulate_time(int);

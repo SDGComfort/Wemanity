@@ -44,6 +44,26 @@ int add_stock(const char* name, int sellIn, int quality, int type)
     else return FAILED;
 }
 
+int free_stock()
+{
+    STOCK* next_ptr;
+    int    count = 0;
+
+    if (NULL!= start_ptr) {
+       next_ptr = start_ptr -> next;
+       free(start_ptr);
+       count++;
+       while (NULL != next_ptr) {
+          next_ptr = next_ptr -> next;
+          count++;
+       }
+       return (count);
+    }
+    else return FAILED;
+}
+
+    
+
 int print_stock()
 {
     int items = 0;
