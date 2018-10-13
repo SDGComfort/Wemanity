@@ -4,18 +4,13 @@
 #include "GildedRose.h"
     
 
-
-static int size = 0;
-static Item items[MAX_ITEMS];
-static int add_item(const char*, int, int);
-static void print_item(Item);
 static void update_quality();
-static int identify_item(Item);
-static void update_normal_item(int);
-static void update_aged_brie(int);
-static void update_legendary_item(int);
-static void update_backstage_pass(int);
-static void update_conjured_item(int);
+static void do_update(int, STOCK*);
+static void update_normal_item(STOCK*);
+static void update_aged_brie(STOCK*);
+static void update_legendary_item(STOCK*);
+static void update_backstage_pass(STOCK*);
+static void update_conjured_item(STOCK*);
 
 static STOCK* stock_ptr;
 static STOCK* start_ptr;
@@ -47,6 +42,7 @@ int add_stock(const char* name, int sellIn, int quality, int type)
 int free_stock()
 {
     STOCK* next_ptr;
+    STOCK* prev_ptr;
     int    count = 0;
 
     if (NULL!= start_ptr) {
@@ -54,15 +50,15 @@ int free_stock()
        free(start_ptr);
        count++;
        while (NULL != next_ptr) {
+          prev_ptr = next_ptr;
           next_ptr = next_ptr -> next;
+          free(prev_ptr);
           count++;
        }
        return (count);
     }
     else return FAILED;
 }
-
-    
 
 int print_stock()
 {
@@ -79,25 +75,18 @@ int print_stock()
 }
 
 
-void initialize()
+int initialize()
 {
-    add_item("+5 Dexterity Vest",10,20);
-    add_item("Aged Brie", 2, 0); 
-    add_item("Elixir of the Mongoose", 5, 7);
-    add_item("Sulfuras, Hand of Ragnaros", 0, 80);
-    add_item("Sulfuras, Hand of Ragnaros", -1, 80);
-    add_item("Backstage passes to a TAFKAL80ETC concert", 15,20);
-    add_item("Backstage passes to a TAFKAL80ETC concert", 10, 49);
-    add_item("Backstage passes to a TAFKAL80ETC concert", 5, 49);
-    add_item("Conjured Mana cake",3,6);
+      int result;
+
+      result = add_stock("+5 Dexterity Vest", 19, 23, NORMAL);
+      result = add_stock("Aged Brie", 5, 33, BRIE);
+      result = add_stock("Sulfuras, Hand of Ragnaros", 0, 80, LEGENDARY);
+      result = add_stock("Backstage passes to a Tom Waits concert", 12, 20, TICKETS);
+      result = add_stock("Conjured Mana cake", 3, 6, CONJURED);
+      return result;
 }
 
-void list_stock()
-{
-    int i;
-    for(i=0;i<size;i++)
-       print_item(items[i]);
-}  
 
 void simulate_time(int days)
 {
@@ -105,79 +94,39 @@ void simulate_time(int days)
 
     for(day=0;day<days;day++){
        update_quality();
-       list_stock();
     }
 }
 
-void zero_list_size()
+static void do_update(int type, STOCK* item_ptr)
 {
-    size = 0;
-}
-
-int test_add_item(const char* name, int sellIn, int quality)
-{
-    int result; 
-
-    result = add_item(name, sellIn, quality);
-    return result;
-}
-
-static int add_item(const char* name, int sellIn, int quality){
-    
-    if (size >= MAX_ITEMS) return FAILED;
-    items[size].name = strdup(name);
-    items[size].sellIn = sellIn;
-    items[size++].quality = quality; 
-    return size;
-}
-
-
-static void print_item(Item item)
-{
-    printf("Name = %s SellIn = %d  Quality = %d\n",item.name,item.sellIn,item.quality); 
+   switch (type) {
+      case NORMAL:    update_normal_item(item_ptr);break;
+      case BRIE:      update_aged_brie(item_ptr);break;
+      case LEGENDARY: update_legendary_item(item_ptr);break;
+      case TICKETS:   update_backstage_pass(item_ptr);break;
+      case CONJURED:  update_conjured_item(item_ptr);break;
+      default:        break;
+   }
 }
 
 static void update_quality()
 {
-    int i;
-    int type; 
+    STOCK* next_ptr;
+    int    type = -1;
 
-    for(i=0;i<size;i++){
-       type = identify_item(items[i]);
-       switch (type) {
-          case NORMAL:    update_normal_item(i);break;
-          case BRIE:      update_aged_brie(i);break;
-          case LEGENDARY: update_legendary_item(i);break;
-          case TICKETS:   update_backstage_pass(i);break;
-          case CONJURED:  update_conjured_item(i);break;
-          default:        break;
-       }
+    if (NULL!= start_ptr) {
+       next_ptr = start_ptr->next;
+       type = start_ptr->type; 
+       do_update(type, start_ptr);
+       while (NULL != next_ptr) {
+          type = next_ptr->type;
+          do_update(type, next_ptr);
+          next_ptr = next_ptr->next;
+       }  
     }
 }
 
-static int identify_item(Item item)
-{
-    if (0 == strcmp(item.name,"+5 Dexterity Vest")){
-       return NORMAL;
-    }
-    if (0 == strcmp(item.name, "Elixir of the Mongoose")){
-       return NORMAL;
-    }
-    if (0 == strcmp(item.name, "Aged Brie")){
-       return BRIE; 
-    }
-    if (0 == strcmp(item.name, "Sulfuras, Hand of Ragnaros")){
-       return LEGENDARY;
-    }
-    if (0 == strcmp(item.name, "Backstage passes to a TAFKAL80ETC concert")){
-       return TICKETS;
-    }
-    if (0 == strcmp(item.name, "Conjured Mana cake")){
-       return CONJURED;
-    }
-    return -1;
-}
-
+/* 
 void test_update_normal_item (int i)
 {
     update_normal_item(i);
@@ -192,63 +141,67 @@ int get_item_quality (int i)
 {
     return items[i].quality;
 }
+*/
 
-static void update_normal_item(int i)
+
+static void update_normal_item(STOCK* item_ptr)
 {
-    items[i].sellIn--;
-    if ((items[i].sellIn >= 0) && (items[i].quality > 0)) items[i].quality--;
-    else if ((items[i].sellIn < 0) && (items[i].quality > 0)) items[i].quality -= 2;
-    if (items[i].quality < 0) items[i].quality = 0;
+    item_ptr->item.sellIn--;
+    if ((item_ptr->item.sellIn >= 0) && (item_ptr->item.quality > 0)) item_ptr->item.quality--;
+    else if ((item_ptr->item.sellIn < 0) && (item_ptr->item.quality > 0)) item_ptr->item.quality -= 2;
+    if (item_ptr->item.quality < 0) item_ptr->item.quality = 0;
 }
-
+/*
 void test_update_brie(int i)
 {
     update_aged_brie(i);
 }
-
-static void update_aged_brie(int i)
+*/
+static void update_aged_brie(STOCK* item_ptr)
 {
-    items[i].sellIn--;
-    items[i].quality++;
-    if (items[i].quality > 50) items[i].quality = 50;
+    item_ptr->item.sellIn--;
+    item_ptr->item.quality++;
+    if (item_ptr->item.quality > 50) item_ptr->item.quality = 50;
 }
-
+/*
 void test_update_legendary (int i)
 {
     update_legendary_item(i);
 }
-
-static void update_legendary_item(int i)
+*/
+static void update_legendary_item(STOCK* item_ptr)
 {
-    if (items[i].quality != 80) items[i].quality = 80;
+    if (item_ptr->item.quality != 80) item_ptr->item.quality = 80;
 }
 
+/*
 void test_update_tickets(int i)
 {
     update_backstage_pass(i);
 }
+*/
 
-static void update_backstage_pass(int i)
+static void update_backstage_pass(STOCK* item_ptr)
 {
-    items[i].sellIn--;
-    if (items[i].sellIn > 10) items[i].quality++;
-    else if ((items[i].sellIn <= 10) && (items[i].sellIn >= 6)) items[i].quality +=2;
-    else if ((items[i].sellIn <=5) && (items[i].sellIn >= 0)) items[i].quality +=3;
-    else if (items[i].sellIn < 0) items[i].quality = 0;
-    if (items[i].quality > 50) items[i].quality = 50;
+    item_ptr->item.sellIn--;
+    if (item_ptr->item.sellIn > 10) item_ptr->item.quality++;
+    else if ((item_ptr->item.sellIn <= 10) && (item_ptr->item.sellIn >= 6)) item_ptr->item.quality +=2;
+    else if ((item_ptr->item.sellIn <=5) && (item_ptr->item.sellIn >= 0)) item_ptr->item.quality +=3;
+    else if (item_ptr->item.sellIn < 0) item_ptr->item.quality = 0;
+    if (item_ptr->item.quality > 50) item_ptr->item.quality = 50;
 }
-
+/*
 void test_update_conjured (int i)
 {
     update_conjured_item(i);
 }
-
-static void update_conjured_item(int i)
+*/
+static void update_conjured_item(STOCK* item_ptr)
 {
-    items[i].sellIn--;
-    if ((items[i].sellIn >= 0) && (items[i].quality > 0)) items[i].quality -= 2;
-    else if ((items[i].sellIn < 0) && (items[i].quality > 0)) items[i].quality -=4;
-    if (items[i].quality < 0) items[i].quality = 0;
+    item_ptr->item.sellIn--;
+    if ((item_ptr->item.sellIn >= 0) && (item_ptr->item.quality > 0)) item_ptr->item.quality -= 2;
+    else if ((item_ptr->item.sellIn < 0) && (item_ptr->item.quality > 0)) item_ptr->item.quality -=4;
+    if (item_ptr->item.quality < 0) item_ptr->item.quality = 0;
 
 }
 
