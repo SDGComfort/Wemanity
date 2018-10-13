@@ -5,6 +5,12 @@ typedef struct
     int quality;
 } Item;
 
+typedef struct stock{
+    Item  items;
+    int	  type;
+    struct stock* next;
+}STOCK;
+
 #define SUCCESS 0
 #define FAILED -1
 #define MAX_ITEMS 5
@@ -16,6 +22,7 @@ enum TYPES{NORMAL,BRIE,LEGENDARY,TICKETS,CONJURED};
 extern void initialize();
 extern void list_stock();
 extern void simulate_time(int);
+extern int add_stock(const char*, int, int, int);
 extern int test_add_item(const char*,int, int);
 extern void test_update_normal_item (int);
 extern int get_item_sellIn (int);

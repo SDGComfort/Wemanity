@@ -12,7 +12,7 @@ TEST_GROUP(TestGildedRoseGroup)
   void setup() {
       int result;
 
-      result = add_stock("This is a new mormal item", 19, 23, NORMAL);
+      result = add_stock("This is a new normal item", 19, 23, NORMAL);
       CHECK_EQUAL(SUCCESS,result);
 
   }

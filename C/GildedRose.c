@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "GildedRose.h"
-
+    
 
 
 static int size = 0;
@@ -16,6 +16,20 @@ static void update_aged_brie(int);
 static void update_legendary_item(int);
 static void update_backstage_pass(int);
 static void update_conjured_item(int);
+
+STOCK* stock_ptr;
+
+int add_stock(const char* name, int sellIn, int quantity, int type)
+{
+    if (NULL == stock_ptr) {
+       stock_ptr = (STOCK*)malloc(sizeof(STOCK));
+    }
+    else if (NULL == stock_ptr->next) {
+       stock_ptr->next = (STOCK*)malloc(sizeof(STOCK));
+    }
+    if (NULL != stock_ptr) return SUCCESS;
+    else return FAILED;
+}
 
 
 void initialize()

@@ -27,18 +27,18 @@ LD_LIBRARIES = -L$(CPPUTEST_HOME)/lib -lCppUTest
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = GildedRoseUnitTests
+TESTS = newGildedRoseUnitTests
 
 TEXTTESTS = GildedRoseTextTests
 
 # House-keeping build targets.
 
-all : $(TESTS) $(TEXTTESTS)
+all : $(TESTS) 
 
 GildedRose.o : $(USER_DIR)/GildedRose.c
 
-GildedRoseUnitTests : $(USER_DIR)/GildedRoseUnitTests.cc GildedRose.o
-	$(CXX) $(CPPFLAGS) $(CFLAGS) -o $@ $(USER_DIR)/GildedRoseUnitTests.cc GildedRose.o $(LD_LIBRARIES)
+newGildedRoseUnitTests : $(USER_DIR)/newGildedRoseUnitTests.cc GildedRose.o
+	$(CXX) $(CPPFLAGS) $(CFLAGS) -o $@ $(USER_DIR)/newGildedRoseUnitTests.cc GildedRose.o $(LD_LIBRARIES)
 
 GildedRoseTextTests.o : $(USER_DIR)/GildedRoseTextTests.c
 
