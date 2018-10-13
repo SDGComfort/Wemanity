@@ -19,16 +19,40 @@ static void update_conjured_item(int);
 
 STOCK* stock_ptr;
 
-int add_stock(const char* name, int sellIn, int quantity, int type)
+int add_stock(const char* name, int sellIn, int quality, int type)
 {
     if (NULL == stock_ptr) {
        stock_ptr = (STOCK*)malloc(sizeof(STOCK));
     }
     else if (NULL == stock_ptr->next) {
        stock_ptr->next = (STOCK*)malloc(sizeof(STOCK));
+       if (NULL != stock_ptr->next) {
+          stock_ptr = stock_ptr->next;
+       }
+       else return FAILED;
     }
-    if (NULL != stock_ptr) return SUCCESS;
+    if (NULL != stock_ptr){
+       stock_ptr->item.name = strdup(name);
+       stock_ptr->item.sellIn = sellIn;
+       stock_ptr->item.quality = quality;
+       stock_ptr->type = type;
+       stock_ptr->next = NULL;
+       return SUCCESS;
+    }
     else return FAILED;
+}
+
+int print_stock()
+{
+    int items = 0;
+
+    while (NULL != stock_ptr) {
+       printf("Name = %s, Sellin = %d, Quality = %d, Type = %d\n",
+               stock_ptr->item.name, stock_ptr->item.sellIn, stock_ptr->item.quality,stock_ptr->type);
+       stock_ptr = stock_ptr->next;
+       items++;
+    }
+    return items;
 }
 
 

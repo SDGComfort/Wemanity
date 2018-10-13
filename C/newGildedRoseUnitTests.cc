@@ -28,8 +28,10 @@ TEST_GROUP(TestGildedRoseGroup)
 
 TEST(TestGildedRoseGroup, FirstTest)
 {
-     FAIL("Fail me\n");
+     int result;
 
+     result = print_stock();
+     CHECK_EQUAL(1,result);
 }
 
 

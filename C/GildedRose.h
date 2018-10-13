@@ -6,7 +6,7 @@ typedef struct
 } Item;
 
 typedef struct stock{
-    Item  items;
+    Item  item;
     int	  type;
     struct stock* next;
 }STOCK;
@@ -21,6 +21,9 @@ enum TYPES{NORMAL,BRIE,LEGENDARY,TICKETS,CONJURED};
 
 extern void initialize();
 extern void list_stock();
+extern int  print_stock();
+
+
 extern void simulate_time(int);
 extern int add_stock(const char*, int, int, int);
 extern int test_add_item(const char*,int, int);
