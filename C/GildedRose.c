@@ -17,12 +17,14 @@ static void update_legendary_item(int);
 static void update_backstage_pass(int);
 static void update_conjured_item(int);
 
-STOCK* stock_ptr;
+static STOCK* stock_ptr;
+static STOCK* start_ptr;
 
 int add_stock(const char* name, int sellIn, int quality, int type)
 {
     if (NULL == stock_ptr) {
        stock_ptr = (STOCK*)malloc(sizeof(STOCK));
+       start_ptr = stock_ptr;
     }
     else if (NULL == stock_ptr->next) {
        stock_ptr->next = (STOCK*)malloc(sizeof(STOCK));
@@ -46,6 +48,7 @@ int print_stock()
 {
     int items = 0;
 
+    stock_ptr = start_ptr;
     while (NULL != stock_ptr) {
        printf("Name = %s, Sellin = %d, Quality = %d, Type = %d\n",
                stock_ptr->item.name, stock_ptr->item.sellIn, stock_ptr->item.quality,stock_ptr->type);

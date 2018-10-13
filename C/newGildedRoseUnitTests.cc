@@ -30,10 +30,10 @@ TEST_GROUP(TestGildedRoseGroup)
 
 TEST(TestGildedRoseGroup, FirstTest)
 {
-     int stock_index; //The array index not the count of items
+     int index; //The count of items
 
-     stock_index = print_stock();
-     CHECK_EQUAL(1,stock_index);
+     index = print_stock();
+     CHECK_EQUAL(2,index);
 }
 
 
