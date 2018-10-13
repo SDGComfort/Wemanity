@@ -17,6 +17,8 @@ TEST_GROUP(TestGildedRoseGroup)
       CHECK_EQUAL(SUCCESS,result);
       result = add_stock("Sulfuras, Hand of Ragnaros", 0, 80, LEGENDARY);
       CHECK_EQUAL(SUCCESS,result);
+      result = add_stock("Eye of Newt", 10, 10, NORMAL);
+      CHECK_EQUAL(SUCCESS,result);
       result = add_stock("Backstage passes to a Tom Waits concert", 12, 20, TICKETS);
       CHECK_EQUAL(SUCCESS,result);
       result = add_stock("Conjured Mana cake", 3, 6, CONJURED);
@@ -26,7 +28,7 @@ TEST_GROUP(TestGildedRoseGroup)
       int result;
 
       result = free_stock();
-      CHECK_EQUAL(5,result);
+      CHECK_EQUAL(6,result);
   }
 };
 
@@ -34,9 +36,21 @@ TEST(TestGildedRoseGroup, FirstTest)
 {
      int index; //The count of items
 
+     printf("Added the stock listed below\n");
+     printf("---------------------------------------------\n");
      index = print_stock();
-     CHECK_EQUAL(5,index);
+     CHECK_EQUAL(6,index);
 }
+
+TEST(TestGildedRoseGroup, SecondTest)
+{
+     int days = 5;
+
+     printf("Simulating 5 days\n");
+     printf("=============================================\n");
+     simulate_time(days);
+}
+
 
 
 int main(int ac, char** av)

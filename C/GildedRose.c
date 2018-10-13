@@ -95,6 +95,7 @@ void simulate_time(int days)
     for(day=0;day<days;day++){
        update_quality();
     }
+    print_stock();
 }
 
 static void do_update(int type, STOCK* item_ptr)
