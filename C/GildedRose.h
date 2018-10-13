@@ -23,12 +23,14 @@ extern int  print_stock();
 extern int  free_stock();
 extern void simulate_time(int);
 extern int  add_stock(const char*, int, int, int);
+extern int get_item_sellIn (int);
+extern int get_item_quality (int);
+const char* get_item_name (int);
 
 /*
 extern int test_add_item(const char*,int, int);
 extern void test_update_normal_item (int);
-extern int get_item_sellIn (int);
-extern int get_item_quality (int);
+
 extern void zero_list_size();
 extern void test_update_brie(int);
 extern void test_update_legendary (int);

@@ -42,13 +42,24 @@ TEST(TestGildedRoseGroup, FirstTest)
      CHECK_EQUAL(6,index);
 }
 
+
 TEST(TestGildedRoseGroup, SecondTest)
 {
      int days = 5;
+     int i;
+     int sellIn, quality;
+     const char* name;
 
      printf("Simulating 5 days\n");
      printf("=============================================\n");
      simulate_time(days);
+     for (i=0; i<6;i++) {
+         name = get_item_name(i);
+         sellIn = get_item_sellIn(i);
+         quality = get_item_quality(i);
+         printf("Item %s: sellIn = %d,quality = %d\n",name, sellIn,quality);
+     }
+     
 }
 
 

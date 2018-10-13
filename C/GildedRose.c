@@ -127,22 +127,48 @@ static void update_quality()
     }
 }
 
-/* 
-void test_update_normal_item (int i)
-{
-    update_normal_item(i);
-}
-
 int get_item_sellIn (int i)
 {
-    return items[i].sellIn;
+    int index =0;
+    STOCK* item_ptr = start_ptr;
+
+    if (0 == i) return item_ptr->item.sellIn;
+    else {
+       for (index=0; index<i;index++) {
+          item_ptr = item_ptr -> next;
+       }
+    }
+    return item_ptr->item.sellIn;
+}
+
+const char* get_item_name (int i)
+{
+    int index =0;
+    STOCK* item_ptr = start_ptr;
+
+    if (0 == i) return item_ptr->item.name;
+    else {
+       for (index=0; index<i;index++) {
+          item_ptr = item_ptr -> next;
+       }
+    }
+    return item_ptr->item.name;
 }
 
 int get_item_quality (int i)
 {
-    return items[i].quality;
+    int index =0;
+    STOCK* item_ptr = start_ptr;
+
+    if (0 == i) return item_ptr->item.quality;
+    else {
+       for (index=0; index<i;index++) {
+          item_ptr = item_ptr -> next;
+       }
+    }
+    return item_ptr->item.quality;
 }
-*/
+
 
 
 static void update_normal_item(STOCK* item_ptr)
