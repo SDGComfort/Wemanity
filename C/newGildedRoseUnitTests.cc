@@ -6,14 +6,16 @@ extern "C" {
 #include "GildedRose.h"
 }
 
-
 TEST_GROUP(TestGildedRoseGroup)
 {
   void setup() {
       int result;
 
-      result = add_stock("This is a new normal item", 19, 23, NORMAL);
+      result = add_stock("+5 Dexterity Vest", 19, 23, NORMAL);
       CHECK_EQUAL(SUCCESS,result);
+      result = add_stock("Aged Brie", 19, 23, BRIE);
+      CHECK_EQUAL(SUCCESS,result);
+
 
   }
   void teardown() {
@@ -28,10 +30,10 @@ TEST_GROUP(TestGildedRoseGroup)
 
 TEST(TestGildedRoseGroup, FirstTest)
 {
-     int result;
+     int stock_index; //The array index not the count of items
 
-     result = print_stock();
-     CHECK_EQUAL(1,result);
+     stock_index = print_stock();
+     CHECK_EQUAL(1,stock_index);
 }
 
 
