@@ -178,35 +178,18 @@ static void update_normal_item(STOCK* item_ptr)
     else if ((item_ptr->item.sellIn < 0) && (item_ptr->item.quality > 0)) item_ptr->item.quality -= 2;
     if (item_ptr->item.quality < 0) item_ptr->item.quality = 0;
 }
-/*
-void test_update_brie(int i)
-{
-    update_aged_brie(i);
-}
-*/
+
 static void update_aged_brie(STOCK* item_ptr)
 {
     item_ptr->item.sellIn--;
     item_ptr->item.quality++;
     if (item_ptr->item.quality > 50) item_ptr->item.quality = 50;
 }
-/*
-void test_update_legendary (int i)
-{
-    update_legendary_item(i);
-}
-*/
+
 static void update_legendary_item(STOCK* item_ptr)
 {
     if (item_ptr->item.quality != 80) item_ptr->item.quality = 80;
 }
-
-/*
-void test_update_tickets(int i)
-{
-    update_backstage_pass(i);
-}
-*/
 
 static void update_backstage_pass(STOCK* item_ptr)
 {
@@ -217,12 +200,7 @@ static void update_backstage_pass(STOCK* item_ptr)
     else if (item_ptr->item.sellIn < 0) item_ptr->item.quality = 0;
     if (item_ptr->item.quality > 50) item_ptr->item.quality = 50;
 }
-/*
-void test_update_conjured (int i)
-{
-    update_conjured_item(i);
-}
-*/
+
 static void update_conjured_item(STOCK* item_ptr)
 {
     item_ptr->item.sellIn--;

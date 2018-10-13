@@ -27,14 +27,4 @@ extern int get_item_sellIn (int);
 extern int get_item_quality (int);
 const char* get_item_name (int);
 
-/*
-extern int test_add_item(const char*,int, int);
-extern void test_update_normal_item (int);
 
-extern void zero_list_size();
-extern void test_update_brie(int);
-extern void test_update_legendary (int);
-extern void test_update_tickets(int);
-
-extern void test_update_conjured (int);
-*/
