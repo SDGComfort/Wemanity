@@ -37,8 +37,8 @@ all : $(TESTS)
 
 GildedRose.o : $(USER_DIR)/GildedRose.c
 
-newGildedRoseUnitTests : $(USER_DIR)/newGildedRoseUnitTests.cc GildedRose.o
-	$(CXX) $(CPPFLAGS) $(CFLAGS) -o $@ $(USER_DIR)/newGildedRoseUnitTests.cc GildedRose.o $(LD_LIBRARIES)
+GildedRoseUnitTests : $(USER_DIR)/GildedRoseUnitTests.cc GildedRose.o
+	$(CXX) $(CPPFLAGS) $(CFLAGS) -o $@ $(USER_DIR)/GildedRoseUnitTests.cc GildedRose.o $(LD_LIBRARIES)
 
 GildedRoseTextTests.o : $(USER_DIR)/GildedRoseTextTests.c
 

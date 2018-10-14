@@ -25,6 +25,7 @@ extern void simulate_time(int);
 extern int  add_stock(const char*, int, int, int);
 extern int get_item_sellIn (int);
 extern int get_item_quality (int);
-const char* get_item_name (int);
+extern const char* get_item_name (int);
+
 
 

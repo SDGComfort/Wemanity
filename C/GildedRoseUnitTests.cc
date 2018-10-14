@@ -6,268 +6,123 @@ extern "C" {
 #include "GildedRose.h"
 }
 
-/* MAX_LIST must be set to 5 for these tests to work. */ 
-/* We have to check business rules for 5 items. These tests are still a bit clunky
-   e.g. Should not have hard coded array indices based on prior knowledge */
-/* Repetitive tests should be in a loop with some if else logic - leaving as is for simplicity */
+static int stock_count = 0;
 
 TEST_GROUP(TestGildedRoseGroup)
 {
   void setup() {
-     int list_size = 0;
+      int result;
 
-     list_size = test_add_item("+5 Dexterity Vest",5,7);
-     list_size = test_add_item("Aged Brie", 4, 47); 
-     list_size = test_add_item("Sulfuras, Hand of Ragnaros", 0, 80);
-     list_size = test_add_item("Backstage passes to a TAFKAL80ETC concert", 12, 24);
-     list_size = test_add_item("Conjured Mana cake",2,11);
+      result = add_stock("+5 Dexterity Vest", 19, 23, NORMAL);
+      CHECK_EQUAL(SUCCESS,result);
+      stock_count++;
+      result = add_stock("Aged Brie", 5, 33, BRIE);
+      CHECK_EQUAL(SUCCESS,result);
+      stock_count++;
+      result = add_stock("Sulfuras, Hand of Ragnaros", 0, 80, LEGENDARY);
+      CHECK_EQUAL(SUCCESS,result);
+      stock_count++;
+      result = add_stock("Eye of Newt", 10, 10, NORMAL);
+      CHECK_EQUAL(SUCCESS,result);
+      stock_count++;
+      result = add_stock("Backstage passes to a Tom Waits concert", 12, 20, TICKETS);
+      CHECK_EQUAL(SUCCESS,result);
+      stock_count++;
+      result = add_stock("Conjured Mana cake", 3, 6, CONJURED);
+      CHECK_EQUAL(SUCCESS,result);
+      stock_count++;
   }
   void teardown() {
-     zero_list_size();
+      int result;
+
+      result = free_stock();
+      CHECK_EQUAL(stock_count,result);
+      stock_count = 0;
   }
 };
 
 TEST(TestGildedRoseGroup, FirstTest)
 {
-    int list_size;
+     int index; //The count of items
 
-/* We expect FAILED (-1) when adding the another item */
-
-    list_size = test_add_item("This should fail", 0, 80);
-    CHECK_EQUAL(FAILED, list_size);
+     printf("Added the stock listed below\n");
+     printf("---------------------------------------------\n");
+     index = print_stock();
+     CHECK_EQUAL(stock_count,index);
 }
+
 
 TEST(TestGildedRoseGroup, SecondTest)
 {
-/* Normal Item Quality decreases linearly, cannot be below 0 */
-/* When sellby date is passed, quality degrades twice as fast. */
+     int days = 12;
+     int sellIn, quality;
+     const char* name;
 
-   int sellIn;
-   int quality;
+     printf("Simulating 12 days\n");
+     printf("=============================================\n");
+     simulate_time(days);
 
-   test_update_normal_item(0);
-   sellIn = get_item_sellIn(0);
-   CHECK_EQUAL(4,sellIn);
-   quality = get_item_quality(0);
-   CHECK_EQUAL(6,quality);
 
-   test_update_normal_item(0);
-   sellIn = get_item_sellIn(0);
-   CHECK_EQUAL(3,sellIn);
-   quality = get_item_quality(0);
-   CHECK_EQUAL(5,quality);
+/* A long and tedious list of tests based entirely on the initial conditions and a 10 day sim */
 
-   test_update_normal_item(0);
-   sellIn = get_item_sellIn(0);
-   CHECK_EQUAL(2,sellIn);
-   quality = get_item_quality(0);
-   CHECK_EQUAL(4,quality);
+     name = get_item_name(0);
+     STRCMP_EQUAL("+5 Dexterity Vest", name);
+     sellIn = get_item_sellIn(0);
+     CHECK_EQUAL(7, sellIn);
+     quality = get_item_quality(0);
+     CHECK_EQUAL(11,quality);
 
-   test_update_normal_item(0);
-   sellIn = get_item_sellIn(0);
-   CHECK_EQUAL(1,sellIn);
-   quality = get_item_quality(0);
-   CHECK_EQUAL(3,quality);
+/* Item 1 - Aged Brie  */
 
-   test_update_normal_item(0);
-   sellIn = get_item_sellIn(0);
-   CHECK_EQUAL(0,sellIn);
-   quality = get_item_quality(0);
-   CHECK_EQUAL(2,quality);
+     name = get_item_name(1);
+     STRCMP_EQUAL("Aged Brie", name);
+     sellIn = get_item_sellIn(1);
+     CHECK_EQUAL(-7, sellIn);
+     quality = get_item_quality(1);
+     CHECK_EQUAL(45,quality);
 
-   test_update_normal_item(0);
-   sellIn = get_item_sellIn(0);
-   CHECK_EQUAL(-1,sellIn);
-   quality = get_item_quality(0);
-   CHECK_EQUAL(0,quality);
+/* Item 2 Sulfuras blah di blah */
 
-   test_update_normal_item(0);
-   sellIn = get_item_sellIn(0);
-   CHECK_EQUAL(-2,sellIn);
-   quality = get_item_quality(0);
-   CHECK_EQUAL(0,quality);
+     name = get_item_name(2);
+     STRCMP_EQUAL("Sulfuras, Hand of Ragnaros", name);
+     sellIn = get_item_sellIn(2);
+     CHECK_EQUAL(0, sellIn);
+     quality = get_item_quality(2);
+     CHECK_EQUAL(80,quality);
+
+/* Item 3 Eye of Newt */
+
+     name = get_item_name(3);
+     STRCMP_EQUAL("Eye of Newt", name);
+     sellIn = get_item_sellIn(3);
+     CHECK_EQUAL(-2, sellIn);
+     quality = get_item_quality(3);
+     CHECK_EQUAL(0,quality);
+
+/* Item 4 Backstage Passes */
+
+     name = get_item_name(4);
+     STRCMP_EQUAL("Backstage passes to a Tom Waits concert", name);
+     sellIn = get_item_sellIn(4);
+     CHECK_EQUAL(0, sellIn);
+     quality = get_item_quality(4);
+     CHECK_EQUAL(49,quality);
+     printf("Item %s: sellIn = %d,quality = %d\n",name, sellIn,quality);    
+
+/* Item 5 Conjured Mana cake */
+
+     name = get_item_name(5);
+     STRCMP_EQUAL("Conjured Mana cake", name);
+     sellIn = get_item_sellIn(5);
+     CHECK_EQUAL(-9, sellIn);
+     quality = get_item_quality(5);
+     CHECK_EQUAL(0,quality);
+     
 }
 
-TEST(TestGildedRoseGroup, ThirdTest)
-{
-/* Aged Brie increases linearly in quality up to a max of 50 */
-
-   int sellIn;
-   int quality;
-
-   test_update_brie(1);
-   sellIn = get_item_sellIn(1);
-   CHECK_EQUAL(3,sellIn);
-   quality = get_item_quality(1);
-   CHECK_EQUAL(48,quality);
-
-   test_update_brie(1);
-   sellIn = get_item_sellIn(1);
-   CHECK_EQUAL(2,sellIn);
-   quality = get_item_quality(1);
-   CHECK_EQUAL(49,quality);
-
-   test_update_brie(1);
-   sellIn = get_item_sellIn(1);
-   CHECK_EQUAL(1,sellIn);
-   quality = get_item_quality(1);
-   CHECK_EQUAL(50,quality);
-
-   test_update_brie(1);
-   sellIn = get_item_sellIn(1);
-   CHECK_EQUAL(0,sellIn);
-   quality = get_item_quality(1);
-   CHECK_EQUAL(50,quality);
-
-   test_update_brie(1);
-   sellIn = get_item_sellIn(1);
-   CHECK_EQUAL(-1,sellIn);
-   quality = get_item_quality(1);
-   CHECK_EQUAL(50,quality);
-}
-
-TEST(TestGildedRoseGroup, FourthTest)
-{
-/* Nothing changes, max quality is 80. Not clear whether sellIn is supposed to 
-   change I assume it doesn't */
-
-   int sellIn;
-   int quality;
-
-   test_update_legendary(2);
-   sellIn = get_item_sellIn(2);
-   CHECK_EQUAL(0,sellIn);
-   quality = get_item_quality(2);
-   CHECK_EQUAL(80,quality);
-
-   test_update_legendary(2);
-   sellIn = get_item_sellIn(2);
-   CHECK_EQUAL(0,sellIn);
-   quality = get_item_quality(2);
-   CHECK_EQUAL(80,quality);
-}
-
-TEST(TestGildedRoseGroup, FifthTest)
-{
-/* Quality increases by 1 until 10 days to go when it increases by two, within 5 days increases by 3
-   After date, quality is 0. Max quality is 50 */
-
-   int sellIn;
-   int quality;
-
-   test_update_tickets(3);
-   sellIn = get_item_sellIn(3);
-   CHECK_EQUAL(11,sellIn);
-   quality = get_item_quality(3);
-   CHECK_EQUAL(25,quality);
-
-   test_update_tickets(3);
-   sellIn = get_item_sellIn(3);
-   CHECK_EQUAL(10,sellIn);
-   quality = get_item_quality(3);
-   CHECK_EQUAL(27,quality);
-
-   test_update_tickets(3);
-   sellIn = get_item_sellIn(3);
-   CHECK_EQUAL(9,sellIn);
-   quality = get_item_quality(3);
-   CHECK_EQUAL(29,quality);
-
-   test_update_tickets(3);
-   sellIn = get_item_sellIn(3);
-   CHECK_EQUAL(8,sellIn);
-   quality = get_item_quality(3);
-   CHECK_EQUAL(31,quality);
-
-   test_update_tickets(3);
-   sellIn = get_item_sellIn(3);
-   CHECK_EQUAL(7,sellIn);
-   quality = get_item_quality(3);
-   CHECK_EQUAL(33,quality);
-
-   test_update_tickets(3);
-   sellIn = get_item_sellIn(3);
-   CHECK_EQUAL(6,sellIn);
-   quality = get_item_quality(3);
-   CHECK_EQUAL(35,quality);
-
-   test_update_tickets(3);
-   sellIn = get_item_sellIn(3);
-   CHECK_EQUAL(5,sellIn);
-   quality = get_item_quality(3);
-   CHECK_EQUAL(38,quality);
-
-   test_update_tickets(3);
-   sellIn = get_item_sellIn(3);
-   CHECK_EQUAL(4,sellIn);
-   quality = get_item_quality(3);
-   CHECK_EQUAL(41,quality);
-
-   test_update_tickets(3);
-   sellIn = get_item_sellIn(3);
-   CHECK_EQUAL(3,sellIn);
-   quality = get_item_quality(3);
-   CHECK_EQUAL(44,quality);
-
-   test_update_tickets(3);
-   sellIn = get_item_sellIn(3);
-   CHECK_EQUAL(2,sellIn);
-   quality = get_item_quality(3);
-   CHECK_EQUAL(47,quality);
-
-   test_update_tickets(3);
-   sellIn = get_item_sellIn(3);
-   CHECK_EQUAL(1,sellIn);
-   quality = get_item_quality(3);
-   CHECK_EQUAL(50,quality);
-
-   test_update_tickets(3);
-   sellIn = get_item_sellIn(3);
-   CHECK_EQUAL(0,sellIn);
-   quality = get_item_quality(3);
-   CHECK_EQUAL(50,quality);
-
-   test_update_tickets(3);
-   sellIn = get_item_sellIn(3);
-   CHECK_EQUAL(-1,sellIn);
-   quality = get_item_quality(3);
-   CHECK_EQUAL(0,quality);
-
-}
-
-TEST(TestGildedRoseGroup, SixthTest)
-{
-/* Quality decreases by 2 per day until sell by date, thereafter decreases by 4 to a minimum of 0 */
-
-   int sellIn;
-   int quality;
-
-   test_update_conjured(4);
-   sellIn = get_item_sellIn(4);
-   CHECK_EQUAL(1,sellIn);
-   quality = get_item_quality(4);
-   CHECK_EQUAL(9,quality);
-
-   test_update_conjured(4);
-   sellIn = get_item_sellIn(4);
-   CHECK_EQUAL(0,sellIn);
-   quality = get_item_quality(4);
-   CHECK_EQUAL( 7,quality);
-
-   test_update_conjured(4);
-   sellIn = get_item_sellIn(4);
-   CHECK_EQUAL(-1,sellIn);
-   quality = get_item_quality(4);
-   CHECK_EQUAL(3,quality);
-
-   test_update_conjured(4);
-   sellIn = get_item_sellIn(4);
-   CHECK_EQUAL(-2,sellIn);
-   quality = get_item_quality(4);
-   CHECK_EQUAL(0,quality);
-}
 
 int main(int ac, char** av)
 {
-  return CommandLineTestRunner::RunAllTests(ac, av);
+
+   return CommandLineTestRunner::RunAllTests(ac, av);
 }

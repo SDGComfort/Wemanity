@@ -169,8 +169,6 @@ int get_item_quality (int i)
     return item_ptr->item.quality;
 }
 
-
-
 static void update_normal_item(STOCK* item_ptr)
 {
     item_ptr->item.sellIn--;
