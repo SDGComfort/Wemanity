@@ -74,7 +74,6 @@ int print_stock()
     return items;
 }
 
-
 int initialize()
 {
       int result;

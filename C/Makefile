@@ -27,7 +27,7 @@ LD_LIBRARIES = -L$(CPPUTEST_HOME)/lib -lCppUTest
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = newGildedRoseUnitTests
+TESTS = GildedRoseUnitTests
 
 TEXTTESTS = GildedRoseTextTests
 

@@ -41,6 +41,7 @@ TEST_GROUP(TestGildedRoseGroup)
   }
 };
 
+
 TEST(TestGildedRoseGroup, FirstTest)
 {
      int index; //The count of items
@@ -107,7 +108,6 @@ TEST(TestGildedRoseGroup, SecondTest)
      CHECK_EQUAL(0, sellIn);
      quality = get_item_quality(4);
      CHECK_EQUAL(49,quality);
-     printf("Item %s: sellIn = %d,quality = %d\n",name, sellIn,quality);    
 
 /* Item 5 Conjured Mana cake */
 

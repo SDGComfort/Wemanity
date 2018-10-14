@@ -1,3 +1,3 @@
 make all
-#./GildedRoseTextTests
-./newGildedRoseUnitTests
+./GildedRoseUnitTests
+
