@@ -26,6 +26,7 @@ extern int  add_stock(const char*, int, int, int);
 extern int get_item_sellIn (int);
 extern int get_item_quality (int);
 extern const char* get_item_name (int);
+extern STOCK* test_business_rule(const char*, int, int, int);
 
 
 

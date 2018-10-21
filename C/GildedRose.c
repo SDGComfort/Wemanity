@@ -5,7 +5,8 @@
     
 
 static void update_quality();
-static void do_update(int, STOCK*);
+static STOCK* add_single_item(const char*, int, int, int);
+static void do_update(STOCK*);
 static void update_normal_item(STOCK*);
 static void update_aged_brie(STOCK*);
 static void update_legendary_item(STOCK*);
@@ -97,9 +98,36 @@ void simulate_time(int days)
     print_stock();
 }
 
-static void do_update(int type, STOCK* item_ptr)
+STOCK* test_business_rule(const char* name, int sellIn, int quality, int type)
 {
-   switch (type) {
+    STOCK* item_ptr = NULL;
+
+    item_ptr = add_single_item(name, sellIn, quality, type);
+    if (NULL != item_ptr) {
+       do_update(item_ptr);
+    }  
+    return (item_ptr);
+}
+
+static STOCK* add_single_item(const char* name, int sellIn, int quality, int type)
+{
+     STOCK* item_ptr = NULL;
+
+     item_ptr = (STOCK*)malloc(sizeof(STOCK));
+     if (NULL != item_ptr) {
+        item_ptr->item.name = strdup(name);
+        item_ptr->item.sellIn = sellIn;
+        item_ptr->item.quality = quality;
+        item_ptr->type = type;
+     }
+     return item_ptr;
+}
+       
+       
+
+static void do_update(STOCK* item_ptr)
+{
+   switch (item_ptr->type) {
       case NORMAL:    update_normal_item(item_ptr);break;
       case BRIE:      update_aged_brie(item_ptr);break;
       case LEGENDARY: update_legendary_item(item_ptr);break;
@@ -112,15 +140,12 @@ static void do_update(int type, STOCK* item_ptr)
 static void update_quality()
 {
     STOCK* next_ptr;
-    int    type = -1;
 
     if (NULL!= start_ptr) {
        next_ptr = start_ptr->next;
-       type = start_ptr->type; 
-       do_update(type, start_ptr);
+       do_update(start_ptr);
        while (NULL != next_ptr) {
-          type = next_ptr->type;
-          do_update(type, next_ptr);
+          do_update(next_ptr);
           next_ptr = next_ptr->next;
        }  
     }
